@@ -1,0 +1,264 @@
+\documentclass[12pt, fullpage,letterpaper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xspace}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+
+\newcommand{\semester}{Spring 2019}
+\newcommand{\assignmentId}{3}
+\newcommand{\releaseDate}{25 Feb, 2019}
+\newcommand{\dueDate}{11:59pm, 9 Mar, 2019}
+
+\newcommand{\bx}{{\bf x}}
+\newcommand{\bw}{{\bf w}}
+
+\title{CS 5350/6350: Machine Learining \semester}
+\author{Homework \assignmentId}
+\date{Handed out: \releaseDate\\
+	Due: \dueDate}
+
+
+\title{CS 5350/6350: Machine Learning \semester}
+\author{Homework \assignmentId}
+\date{Handed out: \releaseDate\\
+  Due date: \dueDate}
+
+\begin{document}
+\maketitle
+
+Caelan Dailey u0881215
+
+\input{emacscomm}
+\newcommand{\Hcal}{\mathcal{H}} 
+{\footnotesize
+	\begin{itemize}
+		\item You are welcome to talk to other members of the class about
+		the homework. I am more concerned that you understand the
+		underlying concepts. However, you should write down your own
+		solution. Please keep the class collaboration policy in mind.
+		
+		\item Feel free to discuss the homework with the instructor or the TAs.
+		
+		\item Your written solutions should be brief and clear. You do not need to include original problem descriptions in your solutions. You need to
+		show your work, not just the final answer, but you do \emph{not}
+		need to write it in gory detail. Your assignment should be {\bf no
+			more than 15 pages}. Every extra page will cost a point.
+		
+		\item Handwritten solutions will not be accepted.
+		
+		
+		\item {\em Your code should run on the CADE machines}. \textbf{You should
+		include a shell script, {\tt run.sh}, that will execute your code
+		in the CADE environment. Your code should produce similar output to what you include in your report.}
+		
+		You are responsible for ensuring that the grader can execute the
+		code using only the included script. If you are using an
+		esoteric programming language, you should make sure that its
+		runtime is available on CADE.
+		
+		\item Please do not hand in binary files! We will {\em not} grade
+		binary submissions.
+		
+		\item The homework is due by \textbf{midnight of the due date}. Please submit
+		the homework on Canvas.
+		
+	\end{itemize}
+}
+
+
+\section{Paper Problems [40 points + 10 bonus]}
+\begin{enumerate}
+	\item~[7 points] Suppose we have a linear classifier for $2$ dimensional features. The classification boundary, \ie  the hyperplane is $2x_1 + 3x_2 - 4 = 0$ ($x_1$ and $x_2$ are the two input features). 
+	\begin{enumerate}
+		
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{cc|c}
+			$x_1$ & $x_2$ &  {label}\\ 
+			\hline\hline
+			1 & 1 & 1 \\ \hline
+			1 & -1 & -1 \\ \hline
+			0 & 0 & -1 \\ \hline
+			-1 & 3 & 1 \\ \hline
+			\end{tabular}
+		\caption{Dataset 1}
+	\end{table}
+	\item~[3 points] Now we have a dataset in Table 1. 
+	Does the hyperplane have a margin for the dataset?  If yes, what is the margin? Please use the formula we discussed in the class to compute. If no, why? (Hint: when can a hyperplane have a margin?) \newline
+
+Yes. Margin = 0.333
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{cc|c}
+			$x_1$ & $x_2$ &  {label}\\ 
+			\hline\hline
+			1 & 1 & 1 \\ \hline
+			1 & -1 & -1 \\ \hline
+			0 & 0 & -1 \\ \hline
+			-1 & 3 & 1 \\ \hline
+				-1 & -1 & 1 \\
+		\end{tabular}
+		\caption{Dataset 2}
+	\end{table}
+	\item~[4 points] We have a second dataset in Table 2. Does the hyperplane have a margin for the dataset? If yes, what is the margin? If no, why? \newline
+
+	No. It's not seperable. (1,1), (0,0), (-1,-1) are on the same line, but are different labels. (0,0) is negative while the other 2 are positive. 
+
+	The new point (-1,-1) is also on the wrong side of the hyperplane.
+	
+	\end{enumerate}
+	
+
+		\item~[7 points] Now, let us look at margins for datasets. Please review what we have discussed in the lecture and slides. A margin for a dataset is not a margin of a hyperplane!  
+		\begin{enumerate}
+			
+			\begin{table}[h]
+				\centering
+				\begin{tabular}{cc|c}
+					$x_1$ & $x_2$ &  {label}\\ 
+					\hline\hline
+					-1 & 0 & -1 \\ \hline
+					0 & -1 & -1 \\ \hline
+					1 & 0 & 1 \\ \hline
+					0 & 1 & 1 \\ \hline
+				\end{tabular}
+				\caption{Dataset 3}
+			\end{table}
+			\item~[3 points] Given the dataset in Table 3, can you calculate its margin? If you cannot, please explain why. \newline
+
+			Yes. Both datasets are seperable. The margin is the sqrt(2) = 1.414
+			\begin{table}[h]
+				\centering
+				\begin{tabular}{cc|c}
+					$x_1$ & $x_2$ &  {label}\\ 
+					\hline\hline
+						-1 & 0 & -1 \\ \hline
+					0 & -1 & 1 \\ \hline
+					1 & 0 & -1 \\ \hline
+					0 & 1 & 1 \\ \hline
+				\end{tabular}
+				\caption{Dataset 4}
+			\end{table}
+			\item~[4 points] Given the dataset in Table 4, can you calculate its margin? If you cannot, please explain why. 
+
+			Cannot calculate its margin. It is not seperable.
+			
+		\end{enumerate}
+	
+	\item ~[8 points] Let us review the Mistake Bound Theorem for Perceptron discussed in our lecture. 
+	\begin{enumerate}
+		\item~[3 points] If we change the second assumption to be as follows: Suppose there exists a vector $\u\in \mathbb{R}^n$, and a positive $\gamma$, we have for each $(\x_i, y_i)$ in the training data, $y_i(\u^\top \x_i) \ge \gamma$. What is the upper bound for the number of mistakes made by the Perceptron algorithm?   Note that $\u$ is unnecessary to be a unit vector. \newline
+
+Upper bound on mistakes = (R/$\gamma)^2$
+
+		\item~[3 points] Following (a), if we do NOT assume $\u$ is a unit vector, and we still want to obtain the same upper bound introduced in the lecture, how should we change the inequalities in the second assumption? \newline
+
+If u is not a vector, then you can scale $\gamma$ in the mistake bound. Now our upper bound is   = (sizeof(u)*R/$\gamma)^2$
+
+
+		\item~[2 points]  Now, let us state the second assumption in another way: Suppose there is a hyperplane that can correctly separate all the positive examples from the negative examples in the data, and the margin for this hyper plane is $\gamma$. What is the upper bound for the number of mistakes made by Perceptron algorithm? \newline
+
+$\gamma$ = 1/2 / sqrt(n + 1/4)
+
+mistakes $\leq$  (R/$\gamma)^2$
+
+
+	\end{enumerate}
+	
+	\item~[6 points] We want to use Perceptron to learn a disjunction as follows,
+	\[
+	f(x_1, x_2, \ldots, x_n) = \neg x_1 \lor \neg \ldots \neg x_k \lor x_{k+1} \lor \ldots \lor x_{2k} \;\;\;\;(\mathrm{note\; that}\;\; 2k < n).
+	\]
+	The training set are all $2^n$ Boolean input vectors in the instance space. 
+	Please derive an upper bound of the number of mistakes made by Perceptron in learning this disjunction. \newline
+	
+	R = sqrt(1+n)
+
+	$ \neg x_1 \lor \neg \ldots \neg x_k \lor x_{k+1} \lor \ldots \lor x_{2k}$ - 1 = 0
+	
+	$ x_{k+1}$ = 1 and everything else is = 0. The margin is then equal to 0. We now have a vector [0,...1,...0]
+
+	Adjust the hyperplane. Now we have $ \neg x_1 \lor \neg \ldots \neg x_k \lor x_{k+1} \lor \ldots \lor x_{2k}$ - 1/2 = 0
+
+	$\gamma$ = 1/2 / sqrt(n + 1/4)
+
+	u = 2 * $\gamma$ * [1,....,1,-1/2]
+
+	x = [x1,....,xn,1]
+
+	Upper bound on mistakes = (R/$\gamma)^2$
+	
+	\item~[6 points] Suppose we have a finite hypothesis space $\Hcal$.
+	\begin{enumerate}
+		\item~[3 points] Suppose $|\Hcal| = 2^{10}$. What is the VC dimension of $\Hcal$? \newline
+
+		It depends on how H can be shattered. The VP dimension definition says H is the size of the largest finite subset of X shattered by H and if arbitrarily large finite sets of X can be shattered by H, then VC(H) = infiity.
+
+
+		\item~[3 points] Generally, for  any finite $\Hcal$, what is $\mathrm{VC}(\Hcal)$ ? \newline
+
+		It is the largest subset that can be shattered. 
+
+
+
+	\end{enumerate}
+	\item~[6 points] Prove that linear classifiers in a plane cannot shatter any $4$ distinct points. \newline
+
+	There exists atleast one configuration that cannot be shatter with a linear classifier. If you look at 4 distinct points where you have a positive and a negative on the same side, then you're unable to shatter it linearly. Table 4 shows an example of it. 
+
+	
+	\item~[\textbf{Bonus}]~[10 points] Consider our infinite hypothesis space $\Hcal$ are all rectangles in a plain. Each rectangle corresponds to a classifier --- all the points inside the rectangle are classified as positive, and otherwise classified as negative. What is $\mathrm{VC}(\Hcal)$? \newline
+
+ $\mathrm{VC}(\Hcal)$ = 4 because that's the number where atleast one configuration exists of that which could be shattered. 
+
+
+
+\end{enumerate}
+
+\section{Practice [60 points ]}
+\begin{enumerate}
+	\item~[2 Points] Update your machine learning library. Please check in your implementation of ensemble learning and least-mean-square (LMS) method in HW1 to your GitHub repository. Remember last time you created the folders ``Ensemble Learning" and ``Linear Regression''. You can commit your code into the corresponding folders now. Please also supplement README.md with concise descriptions about how to use your code to run your Adaboost, bagging, random forest, LMS with batch-gradient and stochastic gradient (how to call the command, set the parameters, etc). Please create a new folder ``Perceptron" in the same level as these folders.  
+
+\item We will implement  Perceptron for a binary classification task --- bank-note authentication. Please download the data ``bank-note.zip'' from Canvas. The features and labels are listed in the file ``bank-note/data-desc.txt''. The training data are stored in the file ``bank-note/train.csv'', consisting of $872$ examples. The test data are stored in ``bank-note/test.csv'', and comprise of $500$ examples. In both the training and testing datasets, feature values and labels are separated by commas. 
+\begin{enumerate}
+	\item~[16 points] Implement the standard Perceptron. Set the maximum number of epochs $T$ to 10. Report your learned weight vector, and the average prediction error on the test dataset.  \newline
+
+Standard prediction error of the dataset: .016
+
+
+Learned weight vector: [-6.5,-4.14,-4.35,-1.56,-5.8]
+
+
+
+	\item~[16 points] Implement the voted Perceptron. Set the maximum number of epochs $T$ to 10. Report the list of the distinct weight vectors and their counts --- the number of correctly predicted training examples. Using this set of weight vectors to predict each test example. Report the average test error.   \newline
+
+Voted prediction error of the dataset: .014
+
+Learned weight vector: [0,-.23,-0.65...-5.7,-5.6,-5.7,0,-0.9,-.65...-4.1,-4,-3.6,0,0.3,.16...-2.49,-2.72,-3.18,0,.13,0.05,-1.48,-1.42,-1.32,0,-.1,-.2...5.5,5.6,5.5]
+
+	\item~[16 points] Implement the average Perceptron. Set the maximum number of epochs $T$ to 10. Report your learned weight vector. Comparing with the list of weight vectors from (b), what can you observe? Report the average prediction error on the test data.  \newline
+
+Average prediction error of the dataset: .014
+
+Learned weight vector: [-39036,-25141,-25960,-727,33903]
+
+	\item~[10 points] Compare the average prediction errors for the three methods. What do you conclude?   \newline
+
+	I conclude that either the voted or the average perceptron are the best on the having the lowest average prediction errors. 
+\end{enumerate}
+
+
+\end{enumerate}
+
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
